@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OSIsoft.AF.xsd" SchemaVersion="2.0" SoftwareVersion="2.8.6.7801" ExportMode="NoUniqueID" PISystem="JLEFEBVRENEW" Database="Motion In Coresight" Description="" Created="2017-04-14T04:59:53.6832988Z" id="a8d55848-1e66-4aab-a3f5-a4374b5a46f3" ParentKey="72a2a2d0-5623-43f2-a079-3594d0c5d4fe" ExportedObject="FileNameGeneration" ExportedType="AFElementTemplate" Identity="ElementTemplate" PIPersist="210 {9895150E-085D-4fcb-A16D-5EF5D2527196} 2\{f9c322c2-354c-426e-8983-31863cebaf06}\ElementTemplates[{a8d55848-1e66-4aab-a3f5-a4374b5a46f3}]*JLEFEBVRENEW\Motion In Coresight\ElementTemplates[FileNameGeneration]">
+  <AFElementTemplate>
+    <Name>FileNameGeneration</Name>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>true</AllowElementToExtend>
+    <AFExtendedProperty>
+      <Name>Override</Name>
+      <Value type="AFElement">TrainingVideo</Value>
+    </AFExtendedProperty>
+    <AFAttributeTemplate>
+      <Name>FileName</Name>
+      <Type>String</Type>
+      <Value type="String"></Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;pointtype=String</ConfigString>
+      <AFAttributeTemplate>
+        <Name>Extension</Name>
+        <Type>String</Type>
+        <Value type="String"></Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>NumberOfFrames</Name>
+        <Type>Int16</Type>
+        <Value type="Int16">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PreFix</Name>
+        <Type>String</Type>
+        <Value type="String">0</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAnalysisTemplate>
+      <Name>Analysis Template1</Name>
+      <Target>FileNameGeneration</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>'*'</ConfigString>
+        <VariableMapping>Output||Time;[GUID]||{523e08c5-de49-4546-a745-768322be8820};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+        <ConfigString>Hertz=10</ConfigString>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>NextFrame</Name>
+      <Target>FileNameGeneration</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastValue := PrevVal('{9f61107e-56b8-4441-82f4-7586ee4851c2};FileName', '*');&#xD;
+NoExtension := Right(LastValue, Len(LastValue) - Len('{9f61107e-56b8-4441-82f4-7586ee4851c2};FileName|{db3cdb20-fde7-41fc-a46f-d968e1fc3e20};PreFix'));&#xD;
+PreviousFrame := Left(NoExtension, Len(NoExtension) - Len('{9f61107e-56b8-4441-82f4-7586ee4851c2};FileName|{9bf7123a-af2e-4adf-9a01-a0086e034535};Extension'));&#xD;
+Frame := ((Int(PreviousFrame) + 1) Mod ('{9f61107e-56b8-4441-82f4-7586ee4851c2};FileName|{d8927660-3dfe-45f0-8680-755340cff7f4};NumberOfFrames' + 1));&#xD;
+Clean := If (BadVal(Frame) or Frame = 0) then "1" else Frame;&#xD;
+NewFileName := Concat('{9f61107e-56b8-4441-82f4-7586ee4851c2};FileName|{db3cdb20-fde7-41fc-a46f-d968e1fc3e20};PreFix', Clean, '{9f61107e-56b8-4441-82f4-7586ee4851c2};FileName|{9bf7123a-af2e-4adf-9a01-a0086e034535};Extension');</ConfigString>
+        <VariableMapping>NewFileName||FileName;[GUID]||{9f61107e-56b8-4441-82f4-7586ee4851c2};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+        <ConfigString>Hertz=100</ConfigString>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+  </AFElementTemplate>
+</AF>

@@ -24,10 +24,6 @@
         function dataUpdate(data) {
             if(data) {
                 scope.value = data.Value;
-                scope.time = data.Time;
-                if(data.Label) {
-                    scope.label = data.Label;
-                }
             }
         }
     };
