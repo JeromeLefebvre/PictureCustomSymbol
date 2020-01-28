@@ -14,4 +14,11 @@
 	limitations under the License.
 -->
 
-<img src="{{value}}" ng-attr-style="height:100%; width:100%; background: {{Fill || 'rgba(255,255,255,0)'}};">
+<div style="padding:30px;font-size:14px">
+	<div>Base URL:
+        <input style="margin-left:5px;vertical-align:middle;margin-bottom:2px"
+               type="text"
+               ng-model="config.baseUrl"
+               ng-model-options="{ debounce: 1000 }">
+    </div>
+</div>

@@ -14,24 +14,36 @@
    limitations under the License.
  ***************************************************************************/
 
-(function (CS) {
+(function (PV) {
     function symbolVis() { }
-    CS.deriveVisualizationFromBase(symbolVis);
+    PV.deriveVisualizationFromBase(symbolVis);
 
 	symbolVis.prototype.init = function (scope) {
         this.onDataUpdate = dataUpdate;
+        this.onConfigChange = configChange;
+        scope.config.baseUrl = 'https://openweathermap.org/img/wn/';
+        scope.value = '10d@2x.png';
 
         function dataUpdate(data) {
             if(data) {
-                scope.value = data.Value;
+                console.log(data);
+                scope.value = scope.config.baseUrl + data.Value;
             }
+            console.log()
+        }
+
+        function configChange(newConfig, oldConfig) {
+            console.log(scope.config.baseUrl);
+
         }
     };
 
     var definition = {
         typeName: 'picture',
-        datasourceBehavior: CS.Extensibility.Enums.DatasourceBehaviors.Single,
+        datasourceBehavior: PV.Extensibility.Enums.DatasourceBehaviors.Single,
         visObjectType: symbolVis,
+        iconUrl: "/Scripts/app/editor/symbols/ext/Icons/camera.png",
+       
         getDefaultConfig: function() {
     	    return {
     	        DataShape: 'Value',
@@ -41,8 +53,14 @@
                 ShowLabel: true,
                 ShowTime: false
             };
+        },
+        configOptions: function() {
+            return [{
+                title: 'Format Symbol',
+                mode: 'format'
+            }];
         }
     };
 
-    CS.symbolCatalog.register(definition);
-})(window.Coresight);
+    PV.symbolCatalog.register(definition);
+})(window.PIVisualization);
